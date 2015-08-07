@@ -4,17 +4,26 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+//import com.google.common.base.Preconditions;
 
 @Configuration
+@EnableTransactionManagement
+@PropertySource({ "classpath:hibernate.properties" })
+@ComponentScan({ "br.com.formento.voteNoRestaurante" })
 public class RepositoryConfig {
 
 	@Value("${jdbc.driverClassName}")
@@ -38,22 +47,14 @@ public class RepositoryConfig {
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hibernateHbm2ddlAuto;
 
-	@Bean()
-	public DataSource getDataSource() {
-		DriverManagerDataSource ds = new DriverManagerDataSource();
-		ds.setDriverClassName(driverClassName);
-		ds.setUrl(url);
-		ds.setUsername(username);
-		ds.setPassword(password);
-		return ds;
-	}
-
 	@Bean
-	@Autowired
-	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-		HibernateTransactionManager htm = new HibernateTransactionManager();
-		htm.setSessionFactory(sessionFactory);
-		return htm;
+	public LocalSessionFactoryBean getSessionFactory() {
+		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		sessionFactory.setDataSource(getDataSource());
+		sessionFactory.setPackagesToScan(new String[] { "br.com.formento.voteNoRestaurante" });
+		sessionFactory.setHibernateProperties(getHibernateProperties());
+
+		return sessionFactory;
 	}
 
 	@Bean
@@ -64,15 +65,29 @@ public class RepositoryConfig {
 	}
 
 	@Bean
-	public AnnotationSessionFactoryBean getSessionFactory() {
-		AnnotationSessionFactoryBean asfb = new AnnotationSessionFactoryBean();
-		asfb.setDataSource(getDataSource());
-		asfb.setHibernateProperties(getHibernateProperties());
-		asfb.setPackagesToScan(new String[] { "br.com.formento.voteNoRestaurante" });
-		return asfb;
+	public DataSource getDataSource() {
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setDriverClassName(driverClassName);
+		dataSource.setUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+
+		return dataSource;
 	}
 
 	@Bean
+	public HibernateTransactionManager transactionManager() {
+		HibernateTransactionManager txManager = new HibernateTransactionManager();
+		txManager.setSessionFactory(getSessionFactory().getObject());
+
+		return txManager;
+	}
+
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor getExceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
+
 	public Properties getHibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", hibernateDialect);

@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.formento.voteNoRestaurante.model.Vote;
 import br.com.formento.voteNoRestaurante.repositories.VoteRepository;
 
-@Service("voteService")
+@Service
 public class VoteServiceImpl implements VoteService {
 
-//	@Autowired
-	VoteRepository voteRepository;
+	@Autowired
+	private VoteRepository voteRepository;
 
 	@Override
 	public List<Vote> getAllVotes() {

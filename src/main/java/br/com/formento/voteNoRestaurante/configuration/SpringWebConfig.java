@@ -60,4 +60,29 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(interceptor);
 	}
 
+	/* Tiles */
+	
+//	@Bean
+//    public UrlBasedViewResolver setupViewResolver() {
+//        UrlBasedViewResolver resolver = new UrlBasedViewResolver();
+//        resolver.setPrefix("/WEB-INF/views/jsp/");
+//        resolver.setSuffix(".jsp");
+//        resolver.setViewClass(JstlView.class);
+//        return resolver;
+//    }
+
+//	@Bean
+//	TilesViewResolver viewResolver() {
+//		TilesViewResolver viewResolver = new TilesViewResolver();
+//		return viewResolver;
+//	}
+//
+//	@Bean
+//	TilesConfigurer tilesConfigurer() {
+//		TilesConfigurer tilesConfigurer = new TilesConfigurer();
+//		tilesConfigurer.setDefinitions("WEB-INF/views/jsp/tiles/tiles.xml", "WEB-INF/views/jsp/tiles/votes.xml");
+////		tilesConfigurer.setPreparerFactoryClass(SpringBeanPreparerFactory.class);
+//		return tilesConfigurer;
+//	}
+
 }

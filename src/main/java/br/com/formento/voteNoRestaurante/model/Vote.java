@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Vote implements Serializable {
@@ -30,10 +32,17 @@ public class Vote implements Serializable {
 	@Column(name = "confirmation_date")
 	private Date confirmationDate;
 
-	public Vote(Long id, Date dateCreate, String email) {
-		this.id = id;
+	@ManyToOne
+	@JoinColumn(columnDefinition = "id", name = "id_restaurant", nullable = false)
+	private Restaurant restaurant;
+
+	public Vote() {
+	}
+
+	public Vote(Date dateCreate, String email, Restaurant restaurant) {
 		this.dateCreate = dateCreate;
 		this.email = email;
+		this.restaurant = restaurant;
 	}
 
 	public Long getId() {
@@ -50,6 +59,10 @@ public class Vote implements Serializable {
 
 	public Date getConfirmationDate() {
 		return confirmationDate;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
 
 	public void setConfirmationDate(Date confirmationDate) {
@@ -80,6 +93,11 @@ public class Vote implements Serializable {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Vote [id=" + id + ", email=" + email + ", confirmationDate=" + confirmationDate + "]";
 	}
 
 }

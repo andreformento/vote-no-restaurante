@@ -21,15 +21,14 @@
 	<section>
 		<div class="jumbotron">
 			<div class="container">
-				<!-- <h1>$-{-greeting}</h1>
-				<p>$-{-tagline}</p> -->
 				<h2><spring:message code="application.language"/></h2>
+				<h3>${count}</h3>
 			</div>
 		</div>
 	</section>
 
 	<section class="container">
-		<a href="votacao"><spring:message code="index.doVote"/></a>
+		<a href="vote"><spring:message code="index.doVote"/></a>
 	</section>
 	
 	<spring:url value="/resources/js/main.js" var="mainJs" />
