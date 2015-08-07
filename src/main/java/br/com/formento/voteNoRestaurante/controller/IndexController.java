@@ -9,8 +9,8 @@ public class IndexController {
 
 	@RequestMapping("/")
 	public String welcome(Model model) {
-		model.addAttribute("greeting", "Working");
-		model.addAttribute("tagline", "Vote!");
+		// model.addAttribute("greeting", "Working");
+		// model.addAttribute("tagline", "Vote!");
 
 		return "index";
 	}
