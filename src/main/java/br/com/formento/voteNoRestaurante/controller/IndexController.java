@@ -24,24 +24,18 @@ public class IndexController {
 
 	@RequestMapping("/")
 	public String welcome(Model model) {
-		List<Restaurant> allRestaurants = restaurantService.getAllRestaurants();
-		for (Restaurant restaurant : allRestaurants)
-			System.out.println(restaurant);
-		
 		return "index";
 	}
 
 	@RequestMapping("/vote")
 	public String vote(Model model) {
-		List<Restaurant> allRestaurants = restaurantService.getAllRestaurants();
+		List<Restaurant> allRestaurants = restaurantService.getEntities();
 		Restaurant restaurant = allRestaurants.get(0);
 
 		Vote vote = new Vote(new Date(), "andreformento.sc@gmail.com", restaurant);
-		voteService.createVote(vote);
+		voteService.createEntity(vote);
 
-		List<Vote> allVotes = voteService.getAllVotes();
-		for (Vote v : allVotes)
-			System.out.println(v);
+		List<Vote> allVotes = voteService.getEntities();
 
 		model.addAttribute("count", allVotes.size());
 

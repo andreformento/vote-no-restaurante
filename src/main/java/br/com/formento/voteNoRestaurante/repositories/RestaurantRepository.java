@@ -8,6 +8,6 @@ public interface RestaurantRepository {
 
 	List<Restaurant> getEntities();
 
-	Long save(Restaurant restaurant);
+	Long save(Restaurant entity);
 
 }

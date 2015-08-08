@@ -6,23 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.formento.voteNoRestaurante.model.Restaurant;
-import br.com.formento.voteNoRestaurante.repositories.RestaurantRepository;
+import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
+import br.com.formento.voteNoRestaurante.repositories.CategoryRestaurantRepository;
 
 @Service
-public class RestaurantServiceImpl implements RestaurantService {
+public class CategoryRestaurantServiceImpl implements CategoryRestaurantService {
 
 	@Autowired
-	private RestaurantRepository repository;
+	private CategoryRestaurantRepository repository;
 
 	@Override
-	public List<Restaurant> getEntities() {
+	public List<CategoryRestaurant> getEntities() {
 		return this.repository.getEntities();
 	}
 
 	@Override
 	@Transactional
-	public void createEntity(Restaurant entity) {
+	public void createEntity(CategoryRestaurant entity) {
 		this.repository.save(entity);
 	}
 

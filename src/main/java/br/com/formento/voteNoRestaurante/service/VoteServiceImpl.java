@@ -13,17 +13,17 @@ import br.com.formento.voteNoRestaurante.repositories.VoteRepository;
 public class VoteServiceImpl implements VoteService {
 
 	@Autowired
-	private VoteRepository voteRepository;
+	private VoteRepository repository;
 
 	@Override
-	public List<Vote> getAllVotes() {
-		return this.voteRepository.getEntities();
+	public List<Vote> getEntities() {
+		return this.repository.getEntities();
 	}
 
 	@Override
 	@Transactional
-	public void createVote(Vote vote) {
-		this.voteRepository.save(vote);
+	public void createEntity(Vote entity) {
+		this.repository.save(entity);
 	}
 
 }

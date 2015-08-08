@@ -14,9 +14,6 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Vote implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,7 +30,7 @@ public class Vote implements Serializable {
 	private Date confirmationDate;
 
 	@ManyToOne
-	@JoinColumn(columnDefinition = "id", name = "id_restaurant", nullable = false)
+	@JoinColumn(referencedColumnName = "id", name = "id_restaurant", nullable = false)
 	private Restaurant restaurant;
 
 	public Vote() {

@@ -23,9 +23,9 @@ public class VoteRepositoryImpl implements VoteRepository {
 	}
 
 	@Override
-	public Long save(Vote vote) {
-		Vote mergeVote = this.hibernateTemplate.merge(vote);
-		return mergeVote.getId();
+	public Long save(Vote entity) {
+		Vote merge = this.hibernateTemplate.merge(entity);
+		return merge.getId();
 	}
 
 //	@Autowired

@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
-@Entity
-public class Restaurant implements Serializable {
+@Entity(name = "category_restaurant")
+public class CategoryRestaurant implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,16 +20,15 @@ public class Restaurant implements Serializable {
 	@Column(nullable = false)
 	private String description;
 
-	@ManyToOne
-	@JoinColumn(referencedColumnName = "id", name = "id_category_restaurant", nullable = false)
-	private CategoryRestaurant categoryRestaurant;
+	@Column(name = "exhibition_order", nullable = false, unique = true)
+	private int exhibitionOrder;
 
-	public Restaurant() {
+	public CategoryRestaurant() {
 	}
 
-	public Restaurant(String description, CategoryRestaurant categoryRestaurant) {
+	public CategoryRestaurant(String description, int exhibitionOrder) {
 		this.description = description;
-		this.categoryRestaurant = categoryRestaurant;
+		this.exhibitionOrder = exhibitionOrder;
 	}
 
 	public Long getId() {
@@ -40,6 +37,10 @@ public class Restaurant implements Serializable {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public int getExhibitionOrder() {
+		return exhibitionOrder;
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class Restaurant implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Restaurant other = (Restaurant) obj;
+		CategoryRestaurant other = (CategoryRestaurant) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -69,7 +70,7 @@ public class Restaurant implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Restaurant [id=" + id + ", description=" + description + "]";
+		return "CategoryRestaurant [id=" + id + ", description=" + description + ", exhibitionOrder=" + exhibitionOrder + "]";
 	}
 
 }

@@ -8,23 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import br.com.formento.voteNoRestaurante.model.Restaurant;
+import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 
 @Transactional
 @Repository
-public class RestaurantRepositoryImpl implements RestaurantRepository {
+public class CategoryRestaurantRepositoryImpl implements CategoryRestaurantRepository {
 
 	@Autowired
 	private HibernateTemplate hibernateTemplate;
 
 	@Override
-	public List<Restaurant> getEntities() {
-		return hibernateTemplate.loadAll(Restaurant.class);
+	public List<CategoryRestaurant> getEntities() {
+		return hibernateTemplate.loadAll(CategoryRestaurant.class);
 	}
 
 	@Override
-	public Long save(Restaurant entity) {
-		Restaurant merge = this.hibernateTemplate.merge(entity);
+	public Long save(CategoryRestaurant entity) {
+		CategoryRestaurant merge = this.hibernateTemplate.merge(entity);
 		return merge.getId();
 	}
 

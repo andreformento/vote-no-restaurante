@@ -8,6 +8,6 @@ public interface VoteRepository {
 
 	List<Vote> getEntities();
 
-	Long save(Vote vote);
+	Long save(Vote entity);
 
 }

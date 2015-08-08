@@ -4,10 +4,8 @@ import java.util.List;
 
 import br.com.formento.voteNoRestaurante.model.Vote;
 
-public interface VoteService {
+public interface VoteService extends EntityService<Vote> {
 
-	List<Vote> getAllVotes();
-
-	void createVote(Vote vote);
+	List<Vote> getEntities();
 
 }

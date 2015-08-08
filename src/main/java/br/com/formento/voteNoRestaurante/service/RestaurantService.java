@@ -4,10 +4,8 @@ import java.util.List;
 
 import br.com.formento.voteNoRestaurante.model.Restaurant;
 
-public interface RestaurantService {
+public interface RestaurantService extends EntityService<Restaurant> {
 
-	List<Restaurant> getAllRestaurants();
-
-	void createRestaurant(Restaurant restaurant);
+	List<Restaurant> getEntities();
 
 }
