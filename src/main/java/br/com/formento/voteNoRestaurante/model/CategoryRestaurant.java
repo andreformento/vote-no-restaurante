@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "category_restaurant")
-public class CategoryRestaurant implements Serializable {
+public class CategoryRestaurant implements Serializable, ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 

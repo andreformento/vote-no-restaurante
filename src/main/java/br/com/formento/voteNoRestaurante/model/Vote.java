@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Vote implements Serializable {
+public class Vote implements Serializable, ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 

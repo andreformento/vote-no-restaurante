@@ -4,10 +4,8 @@ import java.util.List;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 
-public interface CategoryRestaurantRepository {
+public interface CategoryRestaurantRepository extends Repository<CategoryRestaurant> {
 
 	List<CategoryRestaurant> getEntities();
-
-	Long save(CategoryRestaurant entity);
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Restaurant implements Serializable {
+public class Restaurant implements Serializable, ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 

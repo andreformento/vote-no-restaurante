@@ -4,28 +4,17 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.Vote;
 
 @Transactional
 @Repository
-public class VoteRepositoryImpl implements VoteRepository {
-
-	@Autowired
-	private HibernateTemplate hibernateTemplate;
+public class VoteRepositoryImpl extends AbstractRepository<Vote> implements VoteRepository {
 
 	@Override
 	public List<Vote> getEntities() {
-		return hibernateTemplate.loadAll(Vote.class);
-	}
-
-	@Override
-	public Long save(Vote entity) {
-		Vote merge = this.hibernateTemplate.merge(entity);
-		return merge.getId();
+		return super.getEntities();
 	}
 
 //	@Autowired

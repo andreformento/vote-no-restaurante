@@ -4,26 +4,25 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 import br.com.formento.voteNoRestaurante.repositories.CategoryRestaurantRepository;
+import br.com.formento.voteNoRestaurante.repositories.Repository;
 
 @Service
-public class CategoryRestaurantServiceImpl implements CategoryRestaurantService {
+public class CategoryRestaurantServiceImpl extends AbstractEntityService<CategoryRestaurant> implements CategoryRestaurantService {
 
 	@Autowired
 	private CategoryRestaurantRepository repository;
 
 	@Override
-	public List<CategoryRestaurant> getEntities() {
-		return this.repository.getEntities();
+	protected Repository<CategoryRestaurant> getRepository() {
+		return repository;
 	}
 
 	@Override
-	@Transactional
-	public void createEntity(CategoryRestaurant entity) {
-		this.repository.save(entity);
+	public List<CategoryRestaurant> getEntities() {
+		return this.repository.getEntities();
 	}
 
 }

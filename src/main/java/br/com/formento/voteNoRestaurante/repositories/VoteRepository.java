@@ -4,10 +4,8 @@ import java.util.List;
 
 import br.com.formento.voteNoRestaurante.model.Vote;
 
-public interface VoteRepository {
+public interface VoteRepository extends Repository<Vote> {
 
 	List<Vote> getEntities();
-
-	Long save(Vote entity);
 
 }
