@@ -23,9 +23,6 @@ public class Vote implements Serializable, ModelEntity {
 	@Column(name = "date_create", nullable = false)
 	private Date dateCreate;
 
-	@Column(nullable = false)
-	private String email;
-
 	@Column(name = "confirmation_date")
 	private Date confirmationDate;
 
@@ -33,13 +30,17 @@ public class Vote implements Serializable, ModelEntity {
 	@JoinColumn(referencedColumnName = "id", name = "id_restaurant", nullable = false)
 	private Restaurant restaurant;
 
+	@ManyToOne
+	@JoinColumn(referencedColumnName = "id", name = "id_user_voter", nullable = false)
+	private UserVoter userVoter;
+
 	public Vote() {
 	}
 
-	public Vote(Date dateCreate, String email, Restaurant restaurant) {
+	public Vote(Date dateCreate, String email, Restaurant restaurant, UserVoter userVoter) {
 		this.dateCreate = dateCreate;
-		this.email = email;
 		this.restaurant = restaurant;
+		this.userVoter = userVoter;
 	}
 
 	public Long getId() {
@@ -48,10 +49,6 @@ public class Vote implements Serializable, ModelEntity {
 
 	public Date getDateCreate() {
 		return dateCreate;
-	}
-
-	public String getEmail() {
-		return email;
 	}
 
 	public Date getConfirmationDate() {
@@ -68,6 +65,10 @@ public class Vote implements Serializable, ModelEntity {
 
 	public boolean isConfirmed() {
 		return confirmationDate != null;
+	}
+
+	public UserVoter getUser() {
+		return userVoter;
 	}
 
 	@Override
@@ -94,7 +95,8 @@ public class Vote implements Serializable, ModelEntity {
 
 	@Override
 	public String toString() {
-		return "Vote [id=" + id + ", email=" + email + ", confirmationDate=" + confirmationDate + "]";
+		return "Vote [id=" + id + ", dateCreate=" + dateCreate + ", confirmationDate=" + confirmationDate + ", restaurant=" + restaurant + ", userVoter="
+				+ userVoter + "]";
 	}
 
 }

@@ -25,4 +25,9 @@ public class CategoryRestaurantServiceImpl extends AbstractEntityService<Categor
 		return this.repository.getEntities();
 	}
 
+	@Override
+	public CategoryRestaurant getNextByOrder(int order) {
+		return this.repository.getNextByOrder(order);
+	}
+
 }

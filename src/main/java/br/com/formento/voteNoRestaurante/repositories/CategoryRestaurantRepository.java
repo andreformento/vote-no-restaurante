@@ -8,4 +8,6 @@ public interface CategoryRestaurantRepository extends Repository<CategoryRestaur
 
 	List<CategoryRestaurant> getEntities();
 
+	CategoryRestaurant getNextByOrder(int order);
+
 }

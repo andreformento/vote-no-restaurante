@@ -12,9 +12,11 @@
 
 <spring:url value="/resources/css/main.css" var="mainCss" />
 <spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/css/normalize.css" var="normalizeCss" />
 
 <link href="${mainCss}" rel="stylesheet" />
 <link href="${bootstrapCss}" rel="stylesheet" />
+<link href="${normalizeCss}" rel="stylesheet" />
 
 </head>
 <body>
@@ -22,7 +24,7 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h4>
-					<spring:message code="index.welcome" />
+					<spring:message code="index.explanation" />
 				</h4>
 				<h2>
 					<spring:message code="index.title" />
@@ -32,9 +34,8 @@
 	</section>
 
 	<section class="container">
-		<!-- <a href="vote"><spring:message code="index.doVote"/></a> -->
 		<div id="categoryRestaurantList">
-			<h1>carregando</h1>
+			<h1>...</h1>
 		</div>
 	</section>
 
@@ -48,9 +49,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var actionName = "${pageContext.request.contextPath}/categoryRestaurant/list";
-			$("#categoryRestaurantList").load(actionName);  
-			
+			loadNextPage("#categoryRestaurantList","vote/listCategoryRestaurantByOrder?order=0");
 		});
 	</script>
 </body>

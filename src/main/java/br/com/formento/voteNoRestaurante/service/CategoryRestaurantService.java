@@ -8,4 +8,6 @@ public interface CategoryRestaurantService extends EntityService<CategoryRestaur
 
 	List<CategoryRestaurant> getEntities();
 
+	CategoryRestaurant getNextByOrder(int order);
+
 }

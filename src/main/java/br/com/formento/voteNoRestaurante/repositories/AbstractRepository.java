@@ -4,11 +4,15 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import br.com.formento.voteNoRestaurante.model.ModelEntity;
 
+/**
+ * TODO aplicar pattern buid
+ */
 public abstract class AbstractRepository<T extends ModelEntity> implements Repository<T> {
 
 	@Autowired
@@ -26,6 +30,10 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 
 	protected Class<T> getEntityClass() {
 		return entityClass;
+	}
+
+	protected DetachedCriteria generateDetachedCriteria() {
+		return DetachedCriteria.forClass(entityClass);
 	}
 
 	/**

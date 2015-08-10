@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
@@ -13,14 +15,29 @@ import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 @Repository
 public class CategoryRestaurantRepositoryImpl extends AbstractRepository<CategoryRestaurant> implements CategoryRestaurantRepository {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<CategoryRestaurant> getEntities() {
-		// TODO ordenar lista por descrição
-//		List<?> find = getHibernateTemplate().find("from CategoryRestaurant cr order by cr.description");
-//		return (List<CategoryRestaurant>)find;
-		
-		return super.getEntities();
+		List<?> find = getHibernateTemplate().find("from CategoryRestaurant cr order by cr.exhibitionOrder");
+		@SuppressWarnings("unchecked")
+		List<CategoryRestaurant> list = (List<CategoryRestaurant>) find;
+		return list;
+	}
+
+	@Override
+	public CategoryRestaurant getNextByOrder(int order) {
+		DetachedCriteria detachedCriteria = generateDetachedCriteria();
+		detachedCriteria.add(Property.forName("exhibitionOrder").gt(order));
+
+		detachedCriteria.addOrder(Order.asc("exhibitionOrder"));
+
+		List<?> find = getHibernateTemplate().findByCriteria(detachedCriteria, 0, 1);
+
+		@SuppressWarnings("unchecked")
+		List<CategoryRestaurant> list = (List<CategoryRestaurant>) find;
+		if (list.isEmpty())
+			return null;
+		else
+			return list.get(0);
 	}
 
 }

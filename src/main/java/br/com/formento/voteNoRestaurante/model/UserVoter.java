@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "category_restaurant")
-public class CategoryRestaurant implements Serializable, ModelEntity {
+@Table(name = "user_voter")
+public class UserVoter implements Serializable, ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,29 +20,29 @@ public class CategoryRestaurant implements Serializable, ModelEntity {
 	private Long id;
 
 	@Column(nullable = false)
-	private String description;
+	private String name;
 
-	@Column(name = "exhibition_order", nullable = false, unique = true)
-	private int exhibitionOrder;
+	@Column(nullable = false, unique = true)
+	private String email;
 
-	public CategoryRestaurant() {
+	public UserVoter() {
 	}
 
-	public CategoryRestaurant(String description, int exhibitionOrder) {
-		this.description = description;
-		this.exhibitionOrder = exhibitionOrder;
+	public UserVoter(String name, String email) {
+		this.name = name;
+		this.email = email;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
 
-	public int getExhibitionOrder() {
-		return exhibitionOrder;
+	public String getEmail() {
+		return email;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class CategoryRestaurant implements Serializable, ModelEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CategoryRestaurant other = (CategoryRestaurant) obj;
+		UserVoter other = (UserVoter) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -72,7 +72,7 @@ public class CategoryRestaurant implements Serializable, ModelEntity {
 
 	@Override
 	public String toString() {
-		return "CategoryRestaurant [id=" + id + ", description=" + description + ", exhibitionOrder=" + exhibitionOrder + "]";
+		return "UserVoter [id=" + id + ", name=" + name + ", email=" + email + "]";
 	}
 
 }

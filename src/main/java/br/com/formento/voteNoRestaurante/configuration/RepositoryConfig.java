@@ -18,8 +18,6 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-//import com.google.common.base.Preconditions;
-
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:hibernate.properties" })
