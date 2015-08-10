@@ -49,7 +49,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			loadNextPage("#categoryRestaurantList","vote/listCategoryRestaurantByOrder?order=0");
+			loadNextPage("#categoryRestaurantList","vote/listCategoryRestaurantByOrder");
 		});
 	</script>
 </body>
