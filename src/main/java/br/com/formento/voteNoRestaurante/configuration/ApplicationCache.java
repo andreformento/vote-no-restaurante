@@ -19,8 +19,9 @@ public class ApplicationCache {
 
 	@PostConstruct
 	public void populateRestaurant() {
-		// CategoryRestaurant categoryRestaurant = new CategoryRestaurant("Fast food", 1);
-		// categoryRestaurantService.createEntity(categoryRestaurant);
+//		 CategoryRestaurant categoryRestaurant = new CategoryRestaurant("Fast food", 1);
+//		 System.out.println(categoryRestaurantService.getEntities());
+//		 categoryRestaurantService.createEntity(categoryRestaurant);
 		//
 		// //CategoryRestaurant categoryRestaurantLoad = categoryRestaurantService.getEntityById(1l);
 		// Restaurant restaurant = new Restaurant("res1", categoryRestaurantLoad);

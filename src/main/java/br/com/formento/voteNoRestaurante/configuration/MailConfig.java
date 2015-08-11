@@ -20,7 +20,7 @@ public class MailConfig {
 	@Value("${port}")
 	private Integer port;
 
-	@Value("${username}")
+	@Value("${mail.username}")
 	private String username;
 
 	@Value("${password}")
@@ -44,8 +44,8 @@ public class MailConfig {
 	private Properties getMailProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("mail.transport.protocol", "smtp");
-		properties.setProperty("mail.smtp.auth", "false");
-		properties.setProperty("mail.smtp.starttls.enable", "false");
+		properties.setProperty("mail.smtp.auth", "true");
+		properties.setProperty("mail.smtp.starttls.enable", "true");
 		properties.setProperty("mail.debug", "false");
 		return properties;
 	}

@@ -1,8 +1,5 @@
 package br.com.formento.voteNoRestaurante.service;
 
-import java.util.Date;
-import java.util.Locale;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +7,15 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.formento.voteNoRestaurante.model.ComputationVote;
-import br.com.formento.voteNoRestaurante.model.UserVoter;
-import br.com.formento.voteNoRestaurante.model.Vote;
 import br.com.formento.voteNoRestaurante.repositories.ComputationVoteRepository;
 import br.com.formento.voteNoRestaurante.repositories.Repository;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteObserver;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteObserverMail;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteObserverRepositoryEntity;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteObserverRepositoryUserVoter;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteObserverRepositoryVote;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteSubject;
+import br.com.formento.voteNoRestaurante.service.observer.ComputationVoteSubjectImpl;
 
 @Service
 public class ComputationVoteServiceImpl extends AbstractEntityService<ComputationVote> implements ComputationVoteService {
@@ -38,32 +40,26 @@ public class ComputationVoteServiceImpl extends AbstractEntityService<Computatio
 		return repository;
 	}
 
-	// TODO colocar na lista de processamento para computador o voto e enviar o email
+	// colocar na lista de processamento para computador o voto e enviar o
+	// email
 	@Override
 	@Transactional
 	public void computingVote(ComputationVote computationVote) {
-		// TODO aplicar pattern
-		UserVoter userVoterByEmail = userVoterService.getByEmail(computationVote.getUserVoter().getEmail());
-		if (userVoterByEmail == null) {
-			UserVoter userVoter = computationVote.getUserVoter();
-			userVoterService.save(userVoter);
-		} else
-			computationVote.setUserVoter(userVoterByEmail);
+		// pattern observer para disparar tudo que for necessario para computar
+		// o voto: gravar no banco, mandar email...
+		ComputationVoteSubject computationVoteSubject = new ComputationVoteSubjectImpl();
 
-		computationVote.setDateCreate(new Date());
-		computationVote = repository.save(computationVote);
+		ComputationVoteObserver repositoryUserVoterObserver = new ComputationVoteObserverRepositoryUserVoter(computationVoteSubject, userVoterService);
+		ComputationVoteObserver repositoryEntityObserver = new ComputationVoteObserverRepositoryEntity(computationVoteSubject, repository);
+		ComputationVoteObserver repositoryVoteObserver = new ComputationVoteObserverRepositoryVote(computationVoteSubject, voteService);
+		ComputationVoteObserver mailObserver = new ComputationVoteObserverMail(computationVoteSubject, mailService, messageSource);
 
-		for (Vote vote : computationVote.getVoteList()) {
-			vote.setComputationVote(computationVote);
-			voteService.createEntity(vote);
-		}
+		computationVoteSubject.attach(repositoryUserVoterObserver);
+		computationVoteSubject.attach(repositoryEntityObserver);
+		computationVoteSubject.attach(repositoryVoteObserver);
+		computationVoteSubject.attach(mailObserver);
 
-		// TODO usar um pattern para envio de email
-		Locale l = new Locale("pt", "BR");
-		String subject = messageSource.getMessage("email.subject", null,l);
-		System.out.println(subject);
-		String body = "<strong>corpo</strong> do email";
-		mailService.sendMail(computationVote.getUserVoter().getEmail(), subject, body);
+		computationVoteSubject.setState(computationVote);
 	}
 
 }
