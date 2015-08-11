@@ -1,18 +1,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<h4><spring:message code="vote.categoryRestaurant"/></h4>
-<h2>${categoryRestaurant.description}</h2>
-
-<form:form method="post" action="save.html" modelAttribute="contactForm">
-
-	<c:if test="${not empty restaurantList}">
+<section class="container">
+	<h4><spring:message code="vote.categoryRestaurant"/></h4>
+	<h2>${formChoiceRestaurant.categoryRestaurant.description}</h2>
+	
+	<c:if test="${not empty formChoiceRestaurant.restaurantList}">
 		<div class="container-fluid">
-			<c:forEach var="restaurant" items="${restaurantList}">
+			<c:forEach var="restaurant" items="${formChoiceRestaurant.restaurantList}">
 				<div class="row">
 					<div class="col-md-8 col-sm-6">
 						<div class="col-md-4 col-xs-4">
-							<a href="#" onclick="loadNextPage('#categoryRestaurantList','vote/listCategoryRestaurantByOrder?order=${categoryRestaurant.exhibitionOrder}');" 
+							<a href="#" onclick="newVote(${restaurant.id}, ${formChoiceRestaurant.categoryRestaurant.exhibitionOrder});" 
 								class="thumbnail"> 
 								<img src="vote/showRestaurantIcon/${restaurant.id}" alt="${restaurant.description}">
 							</a>
@@ -22,7 +21,7 @@
 							<div class="caption">
 								<h3>${restaurant.description}</h3>
 								<p>
-									<a href="#" onclick="loadNextPage('#categoryRestaurantList','vote/listCategoryRestaurantByOrder?order=${categoryRestaurant.exhibitionOrder}');"
+									<a href="#" onclick="newVote(${restaurant.id}, ${formChoiceRestaurant.categoryRestaurant.exhibitionOrder});"
 										class="btn btn-primary" role="button">
 										<spring:message code="vote.doVote"/>
 									</a>
@@ -34,4 +33,5 @@
 			</c:forEach>
 		</div>
 	</c:if>
-</form:form>
+
+</section>

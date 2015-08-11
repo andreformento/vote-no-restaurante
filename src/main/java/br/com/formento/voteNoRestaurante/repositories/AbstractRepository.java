@@ -4,6 +4,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
@@ -11,7 +13,7 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import br.com.formento.voteNoRestaurante.model.ModelEntity;
 
 /**
- * TODO aplicar pattern buid
+ * TODO aplicar pattern build
  */
 public abstract class AbstractRepository<T extends ModelEntity> implements Repository<T> {
 
@@ -49,10 +51,13 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	}
 
 	@Override
-	public Long save(T entity) {
-		T merge = this.hibernateTemplate.merge(entity);
-		// this.hibernateTemplate.flush();
-		return merge.getId();
+	@Transactional
+	public T save(T entity) {
+//		entity = this.hibernateTemplate.merge(entity);
+		this.hibernateTemplate.persist(entity);
+		
+//		System.out.println("entity "+entity);
+		return entity;
 	}
 
 	@Override

@@ -1,9 +1,5 @@
 package br.com.formento.voteNoRestaurante.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Vote implements Serializable, ModelEntity {
+public class Vote implements ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,55 +16,44 @@ public class Vote implements Serializable, ModelEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "date_create", nullable = false)
-	private Date dateCreate;
-
-	@Column(name = "confirmation_date")
-	private Date confirmationDate;
-
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id", name = "id_restaurant", nullable = false)
 	private Restaurant restaurant;
 
 	@ManyToOne
-	@JoinColumn(referencedColumnName = "id", name = "id_user_voter", nullable = false)
-	private UserVoter userVoter;
+	@JoinColumn(referencedColumnName = "id", name = "id_computation_vote", nullable = false)
+	private ComputationVote computationVote;
 
 	public Vote() {
 	}
 
-	public Vote(Date dateCreate, String email, Restaurant restaurant, UserVoter userVoter) {
-		this.dateCreate = dateCreate;
+	public Vote(Restaurant restaurant, ComputationVote computationVote) {
 		this.restaurant = restaurant;
-		this.userVoter = userVoter;
+		this.computationVote = computationVote;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public void setComputationVote(ComputationVote computationVote) {
+		this.computationVote = computationVote;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
-
-	public Date getConfirmationDate() {
-		return confirmationDate;
-	}
-
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
 
-	public void setConfirmationDate(Date confirmationDate) {
-		this.confirmationDate = confirmationDate;
-	}
-
-	public boolean isConfirmed() {
-		return confirmationDate != null;
-	}
-
-	public UserVoter getUser() {
-		return userVoter;
+	public ComputationVote getComputationVote() {
+		return computationVote;
 	}
 
 	@Override
@@ -95,8 +80,7 @@ public class Vote implements Serializable, ModelEntity {
 
 	@Override
 	public String toString() {
-		return "Vote [id=" + id + ", dateCreate=" + dateCreate + ", confirmationDate=" + confirmationDate + ", restaurant=" + restaurant + ", userVoter="
-				+ userVoter + "]";
+		return "Vote [id=" + id + ", restaurant=" + restaurant + ", computationVote=" + computationVote + "]";
 	}
 
 }

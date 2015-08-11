@@ -3,7 +3,7 @@ package br.com.formento.voteNoRestaurante.service;
 import java.util.List;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
-import br.com.formento.voteNoRestaurante.model.FormChoiceRestaurant;
+import br.com.formento.voteNoRestaurante.model.ComputationVote;
 
 public interface CategoryRestaurantService extends EntityService<CategoryRestaurant> {
 
@@ -11,6 +11,6 @@ public interface CategoryRestaurantService extends EntityService<CategoryRestaur
 
 	CategoryRestaurant getNextByOrder(int order);
 
-	FormChoiceRestaurant getFormChoiceRestaurant(RestaurantService restaurantService, int order);
+	ComputationVote getComputationVote(List<Long> idRestaurantList);
 
 }

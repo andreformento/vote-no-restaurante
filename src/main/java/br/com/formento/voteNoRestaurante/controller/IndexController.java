@@ -22,19 +22,4 @@ public class IndexController {
 		return "index";
 	}
 
-//	@RequestMapping("/vote")
-//	public String vote(Model model) {
-//		List<Restaurant> allRestaurants = restaurantService.getEntities();
-//		Restaurant restaurant = allRestaurants.get(0);
-//
-//		Vote vote = new Vote(new Date(),  restaurant, new );
-//		voteService.createEntity(vote);
-//
-//		List<Vote> allVotes = voteService.getEntities();
-//
-//		model.addAttribute("count", allVotes.size());
-//
-//		return "index";
-//	}
-
 }

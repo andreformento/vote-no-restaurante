@@ -1,7 +1,5 @@
 package br.com.formento.voteNoRestaurante.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Restaurant implements Serializable, ModelEntity {
+public class Restaurant implements ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +38,22 @@ public class Restaurant implements Serializable, ModelEntity {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setCategoryRestaurant(CategoryRestaurant categoryRestaurant) {
+		this.categoryRestaurant = categoryRestaurant;
+	}
+
+	public CategoryRestaurant getCategoryRestaurant() {
+		return categoryRestaurant;
 	}
 
 	@Override

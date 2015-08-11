@@ -1,6 +1,8 @@
 package br.com.formento.voteNoRestaurante.model;
 
-public interface ModelEntity {
+import java.io.Serializable;
+
+public interface ModelEntity extends Serializable {
 
 	Long getId();
 

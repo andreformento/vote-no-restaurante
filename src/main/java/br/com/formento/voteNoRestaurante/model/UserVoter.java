@@ -1,7 +1,5 @@
 package br.com.formento.voteNoRestaurante.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_voter")
-public class UserVoter implements Serializable, ModelEntity {
+public class UserVoter implements ModelEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +28,7 @@ public class UserVoter implements Serializable, ModelEntity {
 
 	public UserVoter(String name, String email) {
 		this.name = name;
-		this.email = email;
+		setEmail(email);
 	}
 
 	public Long getId() {
@@ -43,6 +41,21 @@ public class UserVoter implements Serializable, ModelEntity {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setEmail(String email) {
+		if (email == null)
+			this.email = null;
+		else
+			this.email = email.toLowerCase();
 	}
 
 	@Override

@@ -4,6 +4,6 @@ public interface Repository<T> {
 
 	T byId(Long id);
 
-	Long save(T entity);
+	T save(T entity);
 
 }

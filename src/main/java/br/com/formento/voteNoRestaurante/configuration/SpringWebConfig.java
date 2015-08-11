@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({ "br.com.formento.voteNoRestaurante.controller" })
+@ComponentScan({ "br.com.formento.voteNoRestaurante" })
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
 	@Override
