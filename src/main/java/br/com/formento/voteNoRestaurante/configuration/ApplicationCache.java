@@ -17,7 +17,6 @@ public class ApplicationCache {
 
 	@PostConstruct
 	public void populateRestaurant() {
-		System.out.println("---->ApplicationCache");
 		InitializationCacheBuilder initializationCacheBuilder = new InitializationCacheBuilderImpl();
 		initializationCacheFacadeImpl.buildLists(initializationCacheBuilder);
 		initializationCacheFacadeImpl.saveListCategoryRestaurant();

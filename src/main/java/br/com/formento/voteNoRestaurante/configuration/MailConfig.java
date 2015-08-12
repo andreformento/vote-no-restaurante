@@ -9,6 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import br.com.formento.voteNoRestaurante.model.AplicacaoParametro;
+
 // TODO refatorar: o nome e senha devem ser buscados atraves de algum arquivo de configuracao do servidor
 @Configuration
 @PropertySource({ "classpath:mail.properties" })
@@ -20,10 +22,8 @@ public class MailConfig {
 	@Value("${port}")
 	private Integer port;
 
-	@Value("${mail.username}")
 	private String username;
 
-	@Value("${password}")
 	private String password;
 
 	@Bean
@@ -32,6 +32,9 @@ public class MailConfig {
 
 		javaMailSender.setHost(host);
 		javaMailSender.setPort(port);
+
+		username = AplicacaoParametro.getInstance().getEmailUsername();
+		password = AplicacaoParametro.getInstance().getEmailPassword();
 
 		javaMailSender.setUsername(username);
 		javaMailSender.setPassword(password);
