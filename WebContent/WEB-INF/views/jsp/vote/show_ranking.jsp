@@ -32,9 +32,9 @@
 							<tbody>
 								<c:forEach var="restaurantRow" varStatus="status"
 									items="${categoryRow.value.list}">
-									<tr class="${categoryRow.value.restaurantChoice.id == restaurantRow.value.id ? 'info' : ''}">
-										<td>${restaurantRow.key}</td>
-										<td>${restaurantRow.value.description}</td>
+									<tr class="${categoryRow.value.restaurantChoice.id == restaurantRow.restaurant.id ? 'info' : ''}">
+										<td>${restaurantRow.amountVotes}</td>
+										<td>${restaurantRow.restaurant.description}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

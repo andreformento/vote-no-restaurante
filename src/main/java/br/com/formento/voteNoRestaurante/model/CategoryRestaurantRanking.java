@@ -1,37 +1,40 @@
 package br.com.formento.voteNoRestaurante.model;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class CategoryRestaurantRanking implements Serializable, Comparable<CategoryRestaurantRanking> {
 
 	private static final long serialVersionUID = 1L;
 
 	private CategoryRestaurant categoryRestaurant;
-	private TreeMap<Long, Restaurant> list;
+	private TreeSet<RestaurantCount> list;
 	private Restaurant restaurantChoice;
 
 	public CategoryRestaurantRanking(CategoryRestaurant categoryRestaurant) {
 		this.categoryRestaurant = categoryRestaurant;
-		this.list = new TreeMap<>(Collections.reverseOrder());
+		this.list = new TreeSet<>();
 	}
 
 	@Override
 	public int compareTo(CategoryRestaurantRanking o) {
-		return categoryRestaurant.compareTo(o.categoryRestaurant);
+		int compareTo = categoryRestaurant.compareTo(o.categoryRestaurant);
+		if (compareTo == 0)
+			return categoryRestaurant.getId().compareTo(o.categoryRestaurant.getId());
+		else
+			return compareTo;
 	}
 
 	public CategoryRestaurant getCategoryRestaurant() {
 		return categoryRestaurant;
 	}
 
-	public TreeMap<Long, Restaurant> getList() {
+	public TreeSet<RestaurantCount> getList() {
 		return list;
 	}
 
 	public void addRestaurant(Restaurant restaurant, Long amountVotes) {
-		list.put(amountVotes, restaurant);
+		list.add(new RestaurantCount(restaurant, amountVotes));
 	}
 
 	public Restaurant getRestaurantChoice() {

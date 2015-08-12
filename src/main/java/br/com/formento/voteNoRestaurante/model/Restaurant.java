@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Restaurant implements ModelEntity {
+public class Restaurant implements ModelEntity, Comparable<Restaurant> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,9 +32,9 @@ public class Restaurant implements ModelEntity {
 		this.categoryRestaurant = categoryRestaurant;
 	}
 
-	public Restaurant(Long id, CategoryRestaurant categoryRestaurant) {
+	public Restaurant(Long id, String description, CategoryRestaurant categoryRestaurant) {
+		this(description, categoryRestaurant);
 		this.id = id;
-		this.categoryRestaurant = categoryRestaurant;
 	}
 
 	public Long getId() {
@@ -89,6 +89,11 @@ public class Restaurant implements ModelEntity {
 	@Override
 	public String toString() {
 		return "Restaurant [id=" + id + ", description=" + description + "]";
+	}
+
+	@Override
+	public int compareTo(Restaurant o) {
+		return description.compareTo(o.description);
 	}
 
 }

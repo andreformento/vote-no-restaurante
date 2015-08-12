@@ -1,12 +1,8 @@
 package br.com.formento.voteNoRestaurante.test.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.TreeMap;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,10 +21,10 @@ public class RankingTest {
 	@Before
 	public void instanciar() {
 		crA = new CategoryRestaurant(1l, "A");
-		rA = new Restaurant(1l, crA);
+		rA = new Restaurant(1l, "A", crA);
 
 		crB = new CategoryRestaurant(2l, "B");
-		rB = new Restaurant(2l, crB);
+		rB = new Restaurant(2l, "B", crB);
 
 		ranking = new Ranking();
 		ranking.addRestaurant(rA, 0l);
@@ -37,22 +33,22 @@ public class RankingTest {
 
 	@Test
 	public void testSetRestaurantChoice() {
-		assertNull(ranking.getCategoryRestaurantRankingByRestaurant(rA).getRestaurantChoice());
+		Assert.assertNull(ranking.getCategoryRestaurantRankingByRestaurant(rA).getRestaurantChoice());
 		ranking.setRestaurantChoice(rA);
-		assertNotNull(ranking.getCategoryRestaurantRankingByRestaurant(rA).getRestaurantChoice());
+		Assert.assertNotNull(ranking.getCategoryRestaurantRankingByRestaurant(rA).getRestaurantChoice());
 	}
 
 	@Test
 	public void test2Categorias() {
 		TreeMap<CategoryRestaurant, CategoryRestaurantRanking> list = ranking.getList();
 
-		assertEquals(crA, list.firstEntry().getKey());
+		Assert.assertEquals(crA, list.firstEntry().getKey());
 		list.remove(crA);
 
-		assertEquals(crB, list.firstEntry().getKey());
+		Assert.assertEquals(crB, list.firstEntry().getKey());
 		list.remove(crB);
 
-		assertTrue(list.isEmpty());
+		Assert.assertTrue(list.isEmpty());
 	}
 
 }
