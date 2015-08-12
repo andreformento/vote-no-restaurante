@@ -5,27 +5,23 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import br.com.formento.voteNoRestaurante.service.CategoryRestaurantService;
-import br.com.formento.voteNoRestaurante.service.RestaurantService;
+import br.com.formento.voteNoRestaurante.service.facade.InitializationCacheFacadeImpl;
+import br.com.formento.voteNoRestaurante.service.factory.InitializationCacheBuilder;
+import br.com.formento.voteNoRestaurante.service.factory.InitializationCacheBuilderImpl;
 
 @SpringBootApplication
 public class ApplicationCache {
 
 	@Autowired
-	private CategoryRestaurantService categoryRestaurantService;
-
-	@Autowired
-	private RestaurantService restaurantService;
+	private InitializationCacheFacadeImpl initializationCacheFacadeImpl;
 
 	@PostConstruct
 	public void populateRestaurant() {
-//		 CategoryRestaurant categoryRestaurant = new CategoryRestaurant("Fast food", 1);
-//		 System.out.println(categoryRestaurantService.getEntities());
-//		 categoryRestaurantService.createEntity(categoryRestaurant);
-		//
-		// //CategoryRestaurant categoryRestaurantLoad = categoryRestaurantService.getEntityById(1l);
-		// Restaurant restaurant = new Restaurant("res1", categoryRestaurantLoad);
-		// restaurantService.createEntity(restaurant);
+		InitializationCacheBuilder initializationCacheBuilder = new InitializationCacheBuilderImpl();
+		initializationCacheFacadeImpl.buildLists(initializationCacheBuilder);
+		initializationCacheFacadeImpl.saveListCategoryRestaurant();
+		initializationCacheFacadeImpl.saveListRestaurant();
+		initializationCacheFacadeImpl.saveListRestaurantIcon();
 	}
 
 }

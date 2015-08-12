@@ -29,6 +29,12 @@ public class RestaurantIcon implements ModelEntity {
 	public RestaurantIcon() {
 	}
 
+	public RestaurantIcon(Restaurant restaurant, String imageName, byte[] icon) {
+		this.restaurant = restaurant;
+		this.imageName = imageName;
+		this.icon = icon;
+	}
+
 	public Long getId() {
 		return restaurant.getId();
 	}
