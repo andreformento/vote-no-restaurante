@@ -32,9 +32,17 @@
 							<tbody>
 								<c:forEach var="restaurantRow" varStatus="status"
 									items="${categoryRow.value.list}">
-									<tr class="${categoryRow.value.restaurantChoice.id == restaurantRow.restaurant.id ? 'info' : ''}">
+									<tr class="${(status.count) % 2 == 0 ? '' : 'info'}">
 										<td>${restaurantRow.amountVotes}</td>
-										<td>${restaurantRow.restaurant.description}</td>
+										<td>
+											<c:if test="${status.count == 1}">
+												<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+											</c:if>
+											${restaurantRow.restaurant.description}
+											<c:if test="${categoryRow.value.restaurantChoice.id == restaurantRow.restaurant.id}">
+												<strong> <span class="label label-default"><spring:message code="ranking.form.yourChoice" /></span></strong>
+											</c:if>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
