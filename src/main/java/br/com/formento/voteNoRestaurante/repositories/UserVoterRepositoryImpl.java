@@ -11,6 +11,7 @@ import br.com.formento.voteNoRestaurante.model.UserVoter;
 @Transactional
 @Repository
 public class UserVoterRepositoryImpl extends AbstractRepository<UserVoter> implements UserVoterRepository {
+
 	@Override
 	public UserVoter getByEmail(String email) {
 		StringBuilder sql = new StringBuilder();

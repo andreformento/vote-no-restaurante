@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "category_restaurant")
-public class CategoryRestaurant implements Serializable, ModelEntity {
+public class CategoryRestaurant implements Serializable, ModelEntity, Comparable<CategoryRestaurant> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,6 +31,15 @@ public class CategoryRestaurant implements Serializable, ModelEntity {
 	public CategoryRestaurant(String description, int exhibitionOrder) {
 		this.description = description;
 		this.exhibitionOrder = exhibitionOrder;
+	}
+
+	public CategoryRestaurant(Long id, String description) {
+		this.id = id;
+		this.description = description;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {
@@ -73,6 +82,11 @@ public class CategoryRestaurant implements Serializable, ModelEntity {
 	@Override
 	public String toString() {
 		return "CategoryRestaurant [id=" + id + ", description=" + description + ", exhibitionOrder=" + exhibitionOrder + "]";
+	}
+
+	@Override
+	public int compareTo(CategoryRestaurant o) {
+		return description.compareTo(o.description);
 	}
 
 }

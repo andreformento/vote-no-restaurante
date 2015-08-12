@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.formento.voteNoRestaurante.model.Restaurant;
 import br.com.formento.voteNoRestaurante.model.Vote;
 
 @Transactional
@@ -17,41 +18,26 @@ public class VoteRepositoryImpl extends AbstractRepository<Vote> implements Vote
 		return super.getEntities();
 	}
 
-//	@Autowired
-//	protected SessionFactory sessionFactory;
-//
-//	public List<Vote> getEntities() {
-//		Session currentSession = sessionFactory.getCurrentSession();
-//		
-//		Criteria createCriteria = currentSession.createCriteria(Vote.class);
-//		
-//		TypedQuery<Vote> query = entityManager.createQuery("select o from br.com.formento.voteNoRestaurante.model.Vote e", Vote.class);
-//		return query.getResultList();
-//	}
-//
-//	public Vote find(Long id) {
-//		return entityManager.find(Vote.class, id);
-//	}
-//
-//	public void save(Vote e) {
-//		entityManager.persist(e);
-//	}
-	
+	@Override
+	public Long getAmountValidVotesByRestaurant(Restaurant restaurant) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select count(v.id)");
+		sql.append(" from Vote v");
+		sql.append(" join v.computationVote cv");
+		sql.append(" join v.restaurant r");
+		sql.append(" where cv.confirmationDate is not null ");
+		sql.append("   and r.id = ? ");
 
-	// // @PersistenceContext
-//	private EntityManager entityManager;
-//
-//	public List<Vote> getEntities() {
-//		TypedQuery<Vote> query = entityManager.createQuery("select o from br.com.formento.voteNoRestaurante.model.Vote e", Vote.class);
-//		return query.getResultList();
-//	}
-//
-//	public Vote find(Long id) {
-//		return entityManager.find(Vote.class, id);
-//	}
-//
-//	public void save(Vote e) {
-//		entityManager.persist(e);
-//	}
+		List<?> find = getHibernateTemplate().find(sql.toString(), restaurant.getId());
+		@SuppressWarnings("unchecked")
+		List<Long> list = (List<Long>) find;
+
+		if (find == null || find.isEmpty())
+			return 0l;
+		else {
+			Long amount = list.get(0);
+			return amount;
+		}
+	}
 
 }

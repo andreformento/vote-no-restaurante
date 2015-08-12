@@ -10,6 +10,7 @@ public class ComputationVoteObserverRepositoryVote extends ComputationVoteObserv
 
 	public ComputationVoteObserverRepositoryVote(ComputationVoteSubject computationVoteSubject, VoteService service) {
 		super(computationVoteSubject);
+		this.service = service;
 	}
 
 	@Override

@@ -90,9 +90,9 @@ public class ComputationVote implements ModelEntity {
 		message.append(", userVoter=");
 		message.append(userVoter);
 		message.append(", confirmationDate=");
-		message.append(dateCreate);
-		message.append(", dateCreate=");
 		message.append(confirmationDate);
+		message.append(", dateCreate=");
+		message.append(dateCreate);
 		message.append(", listSize=");
 
 		if (voteList == null)

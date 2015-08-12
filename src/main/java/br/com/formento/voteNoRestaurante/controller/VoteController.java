@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -22,11 +24,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.formento.voteNoRestaurante.controller.form.FormChoiceRestaurant;
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 import br.com.formento.voteNoRestaurante.model.ComputationVote;
+import br.com.formento.voteNoRestaurante.model.Ranking;
 import br.com.formento.voteNoRestaurante.model.RestaurantIcon;
 import br.com.formento.voteNoRestaurante.service.CategoryRestaurantService;
 import br.com.formento.voteNoRestaurante.service.ComputationVoteService;
 import br.com.formento.voteNoRestaurante.service.RestaurantIconService;
 import br.com.formento.voteNoRestaurante.service.RestaurantService;
+import br.com.formento.voteNoRestaurante.util.ServletUtils;
 
 @Controller
 @RequestMapping("/vote")
@@ -55,8 +59,6 @@ public class VoteController {
 		} else {
 			FormChoiceRestaurant formChoiceRestaurant = restaurantService.getFormChoiceRestaurant(categoryRestaurant);
 
-			// try {Thread.sleep(3000l);} catch (InterruptedException e) {}
-
 			model.addAttribute("formChoiceRestaurant", formChoiceRestaurant);
 
 			return "vote/list_category_restaurant_by_order";
@@ -71,10 +73,20 @@ public class VoteController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("computationVote") ComputationVote computationVote) {
-		computationVoteService.computingVote(computationVote);
+	public ModelAndView save(@ModelAttribute("computationVote") ComputationVote computationVote, HttpServletRequest httpServletRequest) {
+		ServletUtils servletUtils = new ServletUtils(httpServletRequest);
+
+		String urlBase = servletUtils.getUrlBase();
+		computationVoteService.computingVote(computationVote, urlBase);
 
 		return new ModelAndView("vote/saved", "computationVote", computationVote);
+	}
+
+	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
+	public ModelAndView confirm(Long id, Model model) {
+		Ranking ranking = computationVoteService.confirmById(id);
+
+		return new ModelAndView("vote/show_ranking", "ranking", ranking);
 	}
 
 	@RequestMapping(value = "/showRestaurantIcon/{idRestaurant}", method = RequestMethod.GET)

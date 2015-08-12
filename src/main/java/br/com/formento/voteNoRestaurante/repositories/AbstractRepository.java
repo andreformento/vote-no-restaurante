@@ -56,7 +56,14 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 //		entity = this.hibernateTemplate.merge(entity);
 		this.hibernateTemplate.persist(entity);
 		
-//		System.out.println("entity "+entity);
+		return entity;
+	}
+
+	@Override
+	@Transactional
+	public T merge(T entity) {
+		this.hibernateTemplate.merge(entity);
+		
 		return entity;
 	}
 

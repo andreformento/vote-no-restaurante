@@ -17,9 +17,8 @@ public class ComputationVoteObserverRepositoryEntity extends ComputationVoteObse
 	@Override
 	public void update() {
 		ComputationVote computationVote = computationVoteSubject.getState();
-
 		computationVote.setDateCreate(new Date());
-		computationVote = repository.save(computationVote);
+		repository.save(computationVote);
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.formento.voteNoRestaurante.controller.form.FormChoiceRestaurant;
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
+import br.com.formento.voteNoRestaurante.model.ComputationVote;
 import br.com.formento.voteNoRestaurante.model.Restaurant;
 import br.com.formento.voteNoRestaurante.repositories.Repository;
 import br.com.formento.voteNoRestaurante.repositories.RestaurantRepository;
@@ -44,6 +45,11 @@ public class RestaurantServiceImpl extends AbstractEntityService<Restaurant> imp
 		director.createInstance();
 
 		return director.getInstance();
+	}
+	
+	@Override
+	public List<Restaurant> getEntitiesByComputation(ComputationVote computationVote) {
+		return repository.getEntitiesByComputation(computationVote);
 	}
 
 }

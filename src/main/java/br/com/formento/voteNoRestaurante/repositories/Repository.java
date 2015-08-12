@@ -6,4 +6,6 @@ public interface Repository<T> {
 
 	T save(T entity);
 
+	T merge(T entity);
+
 }

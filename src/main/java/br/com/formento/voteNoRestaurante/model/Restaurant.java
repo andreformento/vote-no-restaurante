@@ -32,6 +32,11 @@ public class Restaurant implements ModelEntity {
 		this.categoryRestaurant = categoryRestaurant;
 	}
 
+	public Restaurant(Long id, CategoryRestaurant categoryRestaurant) {
+		this.id = id;
+		this.categoryRestaurant = categoryRestaurant;
+	}
+
 	public Long getId() {
 		return id;
 	}
