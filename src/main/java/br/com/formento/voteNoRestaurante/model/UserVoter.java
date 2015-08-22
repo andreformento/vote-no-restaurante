@@ -31,6 +31,11 @@ public class UserVoter implements ModelEntity {
 		setEmail(email);
 	}
 
+	public UserVoter(Long id, String name, String email) {
+		this(name, email);
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

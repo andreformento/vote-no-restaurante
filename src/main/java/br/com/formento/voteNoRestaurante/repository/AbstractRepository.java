@@ -4,31 +4,29 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import br.com.formento.voteNoRestaurante.model.ModelEntity;
+import br.com.formento.voteNoRestaurante.util.QueryUtilRepository;
 
 /**
  * TODO aplicar pattern build
  */
 public abstract class AbstractRepository<T extends ModelEntity> implements Repository<T> {
 
-	private HibernateTemplate hibernateTemplate;
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	private final Class<T> entityClass;
+	private QueryUtilRepository<T> queryUtilRepository;
 
-	@Autowired
-	public AbstractRepository(HibernateTemplate hibernateTemplate) {
+	public AbstractRepository() {
 		this.entityClass = generateEntityClass();
-		this.hibernateTemplate = hibernateTemplate;
-	}
-
-	protected HibernateTemplate getHibernateTemplate() {
-		return hibernateTemplate;
 	}
 
 	protected Class<T> getEntityClass() {
@@ -55,7 +53,7 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	@Transactional
 	public T save(T entity) {
 		// entity = this.hibernateTemplate.merge(entity);
-		this.hibernateTemplate.persist(entity);
+		this.entityManager.persist(entity);
 
 		return entity;
 	}
@@ -63,25 +61,37 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	@Override
 	@Transactional
 	public T merge(T entity) {
-		this.hibernateTemplate.merge(entity);
+		this.entityManager.merge(entity);
 
 		return entity;
 	}
 
 	@Override
 	public T byId(Long id) {
-		T entity = hibernateTemplate.get(entityClass, id);
+		T entity = entityManager.find(entityClass, id);
 		return entity;
 	}
 
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
+
 	/**
-	 * Este método é protected porque deve ser public somente em algumas
-	 * classes. Nestas, eles deverão ser sobreescritos
+	 * Este método é protected porque deve ser public somente em algumas classes. Nestas, eles deverão ser sobreescritos
 	 * 
 	 * @return
 	 */
 	protected List<T> getEntities() {
-		return getHibernateTemplate().loadAll(entityClass);
+		CriteriaQuery<T> criteria = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
+		criteria.select(criteria.from(entityClass));
+		List<T> ListOfEmailDomains = getEntityManager().createQuery(criteria).getResultList();
+		return ListOfEmailDomains;
+	}
+
+	protected QueryUtilRepository<T> getQueryUtilRepository() {
+		if (queryUtilRepository == null)
+			queryUtilRepository = new QueryUtilRepository<T>(entityManager, entityClass);
+		return queryUtilRepository;
 	}
 
 }

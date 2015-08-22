@@ -1,11 +1,11 @@
 package br.com.formento.voteNoRestaurante.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
@@ -15,11 +15,6 @@ import br.com.formento.voteNoRestaurante.model.Restaurant;
 @Transactional
 @Repository
 public class RestaurantRepositoryImpl extends AbstractRepository<Restaurant> implements RestaurantRepository {
-
-	@Autowired
-	public RestaurantRepositoryImpl(HibernateTemplate hibernateTemplate) {
-		super(hibernateTemplate);
-	}
 
 	@Override
 	public List<Restaurant> getEntities() {
@@ -32,12 +27,13 @@ public class RestaurantRepositoryImpl extends AbstractRepository<Restaurant> imp
 		sql.append(" select r");
 		sql.append(" from Restaurant r");
 		sql.append(" join r.categoryRestaurant cr");
-		sql.append(" where cr.id = ? ");
+		sql.append(" where cr.id = :categoryRestaurantId ");
 		sql.append(" order by r.description");
 
-		List<?> find = getHibernateTemplate().find(sql.toString(), categoryRestaurant.getId());
-		@SuppressWarnings("unchecked")
-		List<Restaurant> list = (List<Restaurant>) find;
+		Map<String, Object> params = new HashMap<>();
+		params.put("categoryRestaurantId", categoryRestaurant.getId());
+
+		List<Restaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
 		return list;
 	}
 
@@ -49,12 +45,13 @@ public class RestaurantRepositoryImpl extends AbstractRepository<Restaurant> imp
 		sql.append(" join v.computationVote cv");
 		sql.append(" join v.restaurant r");
 		sql.append(" where cv.confirmationDate is not null ");
-		sql.append("   and cv.id = ? ");
+		sql.append("   and cv.id = :computationVoteId ");
 		sql.append(" order by r.description");
 
-		List<?> find = getHibernateTemplate().find(sql.toString(), computationVote.getId());
-		@SuppressWarnings("unchecked")
-		List<Restaurant> list = (List<Restaurant>) find;
+		Map<String, Object> params = new HashMap<>();
+		params.put("computationVoteId", computationVote.getId());
+
+		List<Restaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
 		return list;
 	}
 

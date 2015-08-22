@@ -1,14 +1,11 @@
 package br.com.formento.voteNoRestaurante.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Property;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
@@ -17,30 +14,30 @@ import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 @Repository
 public class CategoryRestaurantRepositoryImpl extends AbstractRepository<CategoryRestaurant> implements CategoryRestaurantRepository {
 
-	@Autowired
-	public CategoryRestaurantRepositoryImpl(HibernateTemplate hibernateTemplate) {
-		super(hibernateTemplate);
-	}
-
 	@Override
 	public List<CategoryRestaurant> getEntities() {
-		List<?> find = getHibernateTemplate().find("from CategoryRestaurant cr order by cr.exhibitionOrder");
-		@SuppressWarnings("unchecked")
-		List<CategoryRestaurant> list = (List<CategoryRestaurant>) find;
+		StringBuilder sql = new StringBuilder();
+		sql.append(" from CategoryRestaurant cr");
+		sql.append(" order by cr.exhibitionOrder");
+
+		Map<String, Object> params = new HashMap<>();
+
+		List<CategoryRestaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
 		return list;
 	}
 
 	@Override
 	public CategoryRestaurant getNextByOrder(int order) {
-		DetachedCriteria detachedCriteria = generateDetachedCriteria();
-		detachedCriteria.add(Property.forName("exhibitionOrder").gt(order));
+		StringBuilder sql = new StringBuilder();
+		sql.append(" from CategoryRestaurant cr");
+		sql.append(" where cr.exhibitionOrder > :order ");
+		sql.append(" order by cr.exhibitionOrder");
 
-		detachedCriteria.addOrder(Order.asc("exhibitionOrder"));
+		Map<String, Object> params = new HashMap<>();
+		params.put("order", order);
 
-		List<?> find = getHibernateTemplate().findByCriteria(detachedCriteria, 0, 1);
+		List<CategoryRestaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
 
-		@SuppressWarnings("unchecked")
-		List<CategoryRestaurant> list = (List<CategoryRestaurant>) find;
 		if (list.isEmpty())
 			return null;
 		else

@@ -2,20 +2,21 @@ package br.com.formento.voteNoRestaurante.configuration;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.hibernate4.HibernateTemplate;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -46,53 +47,46 @@ public class RepositoryConfig {
 	private String hibernateHbm2ddlAuto;
 
 	@Bean
-	public LocalSessionFactoryBean getSessionFactory() {
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(getDataSource());
-		sessionFactory.setPackagesToScan(new String[] { "br.com.formento.voteNoRestaurante" });
-		sessionFactory.setHibernateProperties(getHibernateProperties());
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+		em.setDataSource(dataSource());
+		em.setPackagesToScan(new String[] { "br.com.formento.voteNoRestaurante.model" });
 
-		return sessionFactory;
+		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		em.setJpaVendorAdapter(vendorAdapter);
+		em.setJpaProperties(additionalProperties());
+
+		return em;
 	}
 
 	@Bean
-	@Autowired
-	public HibernateTemplate getHibernateTemplate(SessionFactory sessionFactory) {
-		HibernateTemplate hibernateTemplate = new HibernateTemplate(sessionFactory);
-		return hibernateTemplate;
-	}
-
-	@Bean
-	public DataSource getDataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
+	public DataSource dataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUrl(url);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);
-
 		return dataSource;
 	}
 
 	@Bean
-	public HibernateTransactionManager transactionManager() {
-		HibernateTransactionManager txManager = new HibernateTransactionManager();
-		txManager.setSessionFactory(getSessionFactory().getObject());
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(emf);
 
-		return txManager;
+		return transactionManager;
 	}
 
 	@Bean
-	public PersistenceExceptionTranslationPostProcessor getExceptionTranslation() {
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 
-	public Properties getHibernateProperties() {
+	Properties additionalProperties() {
 		Properties properties = new Properties();
-		properties.put("hibernate.dialect", hibernateDialect);
-		properties.put("hibernate.show_sql", hibernateShowSql);
-		properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
-
+		properties.setProperty("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
+		properties.setProperty("hibernate.dialect", hibernateDialect);
+		properties.setProperty("hibernate.show_sql", hibernateShowSql);
 		return properties;
 	}
-
 }

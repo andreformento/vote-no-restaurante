@@ -2,10 +2,9 @@ package br.com.formento.voteNoRestaurante.repository;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.Restaurant;
@@ -14,11 +13,6 @@ import br.com.formento.voteNoRestaurante.model.Vote;
 @Transactional
 @Repository
 public class VoteRepositoryImpl extends AbstractRepository<Vote> implements VoteRepository {
-
-	@Autowired
-	public VoteRepositoryImpl(HibernateTemplate hibernateTemplate) {
-		super(hibernateTemplate);
-	}
 
 	@Override
 	public List<Vote> getEntities() {
@@ -33,18 +27,14 @@ public class VoteRepositoryImpl extends AbstractRepository<Vote> implements Vote
 		sql.append(" join v.computationVote cv");
 		sql.append(" join v.restaurant r");
 		sql.append(" where cv.confirmationDate is not null ");
-		sql.append("   and r.id = ? ");
+		sql.append("   and r.id = :idRestaurant ");
 
-		List<?> find = getHibernateTemplate().find(sql.toString(), restaurant.getId());
-		@SuppressWarnings("unchecked")
-		List<Long> list = (List<Long>) find;
+		TypedQuery<Long> query = getEntityManager().createQuery(sql.toString(), Long.class);
 
-		if (find == null || find.isEmpty())
-			return 0l;
-		else {
-			Long amount = list.get(0);
-			return amount;
-		}
+		query.setParameter("idRestaurant", restaurant.getId());
+
+		Long result = query.getSingleResult();
+		return result;
 	}
 
 }

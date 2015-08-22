@@ -1,11 +1,10 @@
 package br.com.formento.voteNoRestaurante.repository;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.UserVoter;
@@ -14,27 +13,18 @@ import br.com.formento.voteNoRestaurante.model.UserVoter;
 @Repository
 public class UserVoterRepositoryImpl extends AbstractRepository<UserVoter> implements UserVoterRepository {
 
-	@Autowired
-	public UserVoterRepositoryImpl(HibernateTemplate hibernateTemplate) {
-		super(hibernateTemplate);
-	}
-
 	@Override
 	public UserVoter getByEmail(String email) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select uv");
 		sql.append(" from UserVoter uv");
-		sql.append(" where upper(uv.email) = upper(?) ");
+		sql.append(" where upper(uv.email) = upper(:userVoterMail) ");
 
-		List<?> find = getHibernateTemplate().find(sql.toString(), email);
+		Map<String, Object> params = new HashMap<>();
+		params.put("userVoterMail", email);
 
-		if (find == null || find.isEmpty())
-			return null;
-		else {
-			@SuppressWarnings("unchecked")
-			List<UserVoter> list = (List<UserVoter>) find;
-			return list.get(0);
-		}
+		UserVoter result = getQueryUtilRepository().simpleQueryUniqueResult(sql.toString(), params);
+		return result;
 	}
 
 }
