@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.formento.voteNoRestaurante.model.UserVoter;
-import br.com.formento.voteNoRestaurante.repositories.Repository;
-import br.com.formento.voteNoRestaurante.repositories.UserVoterRepository;
+import br.com.formento.voteNoRestaurante.repository.Repository;
+import br.com.formento.voteNoRestaurante.repository.UserVoterRepository;
 
 @Service
 public class UserVoterServiceImpl extends AbstractEntityService<UserVoter> implements UserVoterService {

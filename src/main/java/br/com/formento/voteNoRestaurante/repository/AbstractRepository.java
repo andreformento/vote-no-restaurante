@@ -1,4 +1,4 @@
-package br.com.formento.voteNoRestaurante.repositories;
+package br.com.formento.voteNoRestaurante.repository;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -17,13 +17,14 @@ import br.com.formento.voteNoRestaurante.model.ModelEntity;
  */
 public abstract class AbstractRepository<T extends ModelEntity> implements Repository<T> {
 
-	@Autowired
 	private HibernateTemplate hibernateTemplate;
 
-	private Class<T> entityClass;
+	private final Class<T> entityClass;
 
-	public AbstractRepository() {
-		generateEntityClass();
+	@Autowired
+	public AbstractRepository(HibernateTemplate hibernateTemplate) {
+		this.entityClass = generateEntityClass();
+		this.hibernateTemplate = hibernateTemplate;
 	}
 
 	protected HibernateTemplate getHibernateTemplate() {
@@ -42,20 +43,20 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	 * Gera a classe da entidade correspondente
 	 */
 	@SuppressWarnings("unchecked")
-	private void generateEntityClass() {
+	private Class<T> generateEntityClass() {
 		Class<?> thisClass = getClass();
 		ParameterizedType parameterizedType = (ParameterizedType) thisClass.getGenericSuperclass();
 
 		Type type = parameterizedType.getActualTypeArguments()[0];
-		this.entityClass = (Class<T>) type;
+		return (Class<T>) type;
 	}
 
 	@Override
 	@Transactional
 	public T save(T entity) {
-//		entity = this.hibernateTemplate.merge(entity);
+		// entity = this.hibernateTemplate.merge(entity);
 		this.hibernateTemplate.persist(entity);
-		
+
 		return entity;
 	}
 
@@ -63,7 +64,7 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	@Transactional
 	public T merge(T entity) {
 		this.hibernateTemplate.merge(entity);
-		
+
 		return entity;
 	}
 
@@ -74,7 +75,8 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	}
 
 	/**
-	 * Este método é protected porque deve ser public somente em algumas classes. Nestas, eles deverão ser sobreescritos
+	 * Este método é protected porque deve ser public somente em algumas
+	 * classes. Nestas, eles deverão ser sobreescritos
 	 * 
 	 * @return
 	 */

@@ -1,4 +1,4 @@
-package br.com.formento.voteNoRestaurante.repositories;
+package br.com.formento.voteNoRestaurante.repository;
 
 import br.com.formento.voteNoRestaurante.model.RestaurantIcon;
 

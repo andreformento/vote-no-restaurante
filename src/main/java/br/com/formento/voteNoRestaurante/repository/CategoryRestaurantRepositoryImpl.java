@@ -1,4 +1,4 @@
-package br.com.formento.voteNoRestaurante.repositories;
+package br.com.formento.voteNoRestaurante.repository;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
@@ -14,6 +16,11 @@ import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
 @Transactional
 @Repository
 public class CategoryRestaurantRepositoryImpl extends AbstractRepository<CategoryRestaurant> implements CategoryRestaurantRepository {
+
+	@Autowired
+	public CategoryRestaurantRepositoryImpl(HibernateTemplate hibernateTemplate) {
+		super(hibernateTemplate);
+	}
 
 	@Override
 	public List<CategoryRestaurant> getEntities() {

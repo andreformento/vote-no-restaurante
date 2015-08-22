@@ -1,9 +1,11 @@
-package br.com.formento.voteNoRestaurante.repositories;
+package br.com.formento.voteNoRestaurante.repository;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.UserVoter;
@@ -11,6 +13,11 @@ import br.com.formento.voteNoRestaurante.model.UserVoter;
 @Transactional
 @Repository
 public class UserVoterRepositoryImpl extends AbstractRepository<UserVoter> implements UserVoterRepository {
+
+	@Autowired
+	public UserVoterRepositoryImpl(HibernateTemplate hibernateTemplate) {
+		super(hibernateTemplate);
+	}
 
 	@Override
 	public UserVoter getByEmail(String email) {

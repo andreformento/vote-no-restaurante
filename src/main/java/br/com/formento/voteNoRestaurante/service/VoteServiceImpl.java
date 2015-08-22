@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.formento.voteNoRestaurante.model.Restaurant;
 import br.com.formento.voteNoRestaurante.model.Vote;
-import br.com.formento.voteNoRestaurante.repositories.Repository;
-import br.com.formento.voteNoRestaurante.repositories.VoteRepository;
+import br.com.formento.voteNoRestaurante.repository.Repository;
+import br.com.formento.voteNoRestaurante.repository.VoteRepository;
 
 @Service
 public class VoteServiceImpl extends AbstractEntityService<Vote> implements VoteService {

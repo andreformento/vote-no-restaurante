@@ -3,7 +3,7 @@ package br.com.formento.voteNoRestaurante.service.observer;
 import java.util.Date;
 
 import br.com.formento.voteNoRestaurante.model.ComputationVote;
-import br.com.formento.voteNoRestaurante.repositories.ComputationVoteRepository;
+import br.com.formento.voteNoRestaurante.repository.ComputationVoteRepository;
 
 public class ComputationVoteObserverRepositoryEntity extends ComputationVoteObserverImpl {
 

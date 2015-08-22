@@ -2,7 +2,7 @@ package br.com.formento.voteNoRestaurante.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.formento.voteNoRestaurante.repositories.Repository;
+import br.com.formento.voteNoRestaurante.repository.Repository;
 
 public abstract class AbstractEntityService<T> implements EntityService<T> {
 

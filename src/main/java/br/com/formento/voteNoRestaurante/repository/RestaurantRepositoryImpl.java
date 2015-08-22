@@ -1,9 +1,11 @@
-package br.com.formento.voteNoRestaurante.repositories;
+package br.com.formento.voteNoRestaurante.repository;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.CategoryRestaurant;
@@ -13,6 +15,11 @@ import br.com.formento.voteNoRestaurante.model.Restaurant;
 @Transactional
 @Repository
 public class RestaurantRepositoryImpl extends AbstractRepository<Restaurant> implements RestaurantRepository {
+
+	@Autowired
+	public RestaurantRepositoryImpl(HibernateTemplate hibernateTemplate) {
+		super(hibernateTemplate);
+	}
 
 	@Override
 	public List<Restaurant> getEntities() {

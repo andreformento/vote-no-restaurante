@@ -1,4 +1,4 @@
-package br.com.formento.voteNoRestaurante.repositories;
+package br.com.formento.voteNoRestaurante.repository;
 
 public interface Repository<T> {
 

@@ -1,4 +1,4 @@
-package br.com.formento.voteNoRestaurante.test.serviceFactory;
+package br.com.formento.voteNoRestaurante.test.service.factory;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
