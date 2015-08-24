@@ -33,7 +33,7 @@ public class RestaurantRepositoryImpl extends AbstractRepository<Restaurant> imp
 		Map<String, Object> params = new HashMap<>();
 		params.put("categoryRestaurantId", categoryRestaurant.getId());
 
-		List<Restaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
+		List<Restaurant> list = simpleQueryList(sql.toString(), params);
 		return list;
 	}
 
@@ -51,7 +51,7 @@ public class RestaurantRepositoryImpl extends AbstractRepository<Restaurant> imp
 		Map<String, Object> params = new HashMap<>();
 		params.put("computationVoteId", computationVote.getId());
 
-		List<Restaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
+		List<Restaurant> list = simpleQueryList(sql.toString(), params);
 		return list;
 	}
 

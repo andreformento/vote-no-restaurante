@@ -1,18 +1,14 @@
 package br.com.formento.voteNoRestaurante.repository;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 
-import org.hibernate.criterion.DetachedCriteria;
-
 import br.com.formento.voteNoRestaurante.model.ModelEntity;
-import br.com.formento.voteNoRestaurante.util.QueryUtilRepository;
+import br.com.formento.voteNoRestaurante.service.QueryUtilRepository;
 
 /**
  * TODO aplicar pattern build
@@ -22,58 +18,48 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private final Class<T> entityClass;
 	private QueryUtilRepository<T> queryUtilRepository;
 
 	public AbstractRepository() {
-		this.entityClass = generateEntityClass();
 	}
 
-	protected Class<T> getEntityClass() {
-		return entityClass;
-	}
-
-	protected DetachedCriteria generateDetachedCriteria() {
-		return DetachedCriteria.forClass(entityClass);
-	}
-
-	/**
-	 * Gera a classe da entidade correspondente
-	 */
-	@SuppressWarnings("unchecked")
-	private Class<T> generateEntityClass() {
-		Class<?> thisClass = getClass();
-		ParameterizedType parameterizedType = (ParameterizedType) thisClass.getGenericSuperclass();
-
-		Type type = parameterizedType.getActualTypeArguments()[0];
-		return (Class<T>) type;
+	public AbstractRepository(QueryUtilRepository<T> queryUtilRepository) {
+		this.queryUtilRepository = queryUtilRepository;
 	}
 
 	@Override
 	@Transactional
 	public T save(T entity) {
-		// entity = this.hibernateTemplate.merge(entity);
-		this.entityManager.persist(entity);
-
-		return entity;
+		return getQueryUtilRepository().save(entity);
 	}
 
 	@Override
 	@Transactional
 	public T merge(T entity) {
-		this.entityManager.merge(entity);
-
-		return entity;
+		return getQueryUtilRepository().merge(entity);
 	}
 
 	@Override
 	public T byId(Long id) {
-		T entity = entityManager.find(entityClass, id);
-		return entity;
+		return getQueryUtilRepository().byId(id);
 	}
 
-	protected EntityManager getEntityManager() {
-		return entityManager;
+	private QueryUtilRepository<T> getQueryUtilRepository() {
+		if (queryUtilRepository == null)
+			queryUtilRepository = new QueryUtilRepository<>(entityManager);
+		return queryUtilRepository;
+	}
+
+	public List<T> simpleQueryList(String sql, Map<String, Object> params, int maxResults) {
+		return getQueryUtilRepository().simpleQueryList(sql, params, maxResults);
+	}
+
+	public List<T> simpleQueryList(String sql, Map<String, Object> params) {
+		return getQueryUtilRepository().simpleQueryList(sql, params);
+	}
+
+	public T simpleQueryUniqueResult(String sql, Map<String, Object> params) {
+		return getQueryUtilRepository().simpleQueryUniqueResult(sql, params);
 	}
 
 	/**
@@ -82,16 +68,11 @@ public abstract class AbstractRepository<T extends ModelEntity> implements Repos
 	 * @return
 	 */
 	protected List<T> getEntities() {
-		CriteriaQuery<T> criteria = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
-		criteria.select(criteria.from(entityClass));
-		List<T> ListOfEmailDomains = getEntityManager().createQuery(criteria).getResultList();
-		return ListOfEmailDomains;
+		return getQueryUtilRepository().getEntities();
 	}
-
-	protected QueryUtilRepository<T> getQueryUtilRepository() {
-		if (queryUtilRepository == null)
-			queryUtilRepository = new QueryUtilRepository<T>(entityManager, entityClass);
-		return queryUtilRepository;
+	
+	public EntityManager getEntityManager() {
+		return entityManager;
 	}
 
 }

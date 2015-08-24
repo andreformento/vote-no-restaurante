@@ -2,16 +2,17 @@ package br.com.formento.voteNoRestaurante.test.repository;
 
 import static org.junit.Assert.assertNotNull;
 
+import javax.persistence.EntityManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 
 public abstract class AbstractRepositoryTest {
 
 	@Mock
-	private HibernateTemplate hibernateTemplate;
+	private EntityManager entityManager;
 
 	@Before
 	public final void init() {
@@ -23,11 +24,11 @@ public abstract class AbstractRepositoryTest {
 
 	@Test
 	public void testHibernateTemplateIsNotNull() {
-		assertNotNull(hibernateTemplate);
+		assertNotNull(entityManager);
 	}
 
-	public HibernateTemplate getHibernateTemplate() {
-		return hibernateTemplate;
+	public EntityManager getEntityManager() {
+		return entityManager;
 	}
 
 }

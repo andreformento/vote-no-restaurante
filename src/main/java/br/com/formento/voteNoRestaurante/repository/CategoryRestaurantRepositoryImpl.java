@@ -22,7 +22,7 @@ public class CategoryRestaurantRepositoryImpl extends AbstractRepository<Categor
 
 		Map<String, Object> params = new HashMap<>();
 
-		List<CategoryRestaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
+		List<CategoryRestaurant> list = simpleQueryList(sql.toString(), params);
 		return list;
 	}
 
@@ -36,7 +36,7 @@ public class CategoryRestaurantRepositoryImpl extends AbstractRepository<Categor
 		Map<String, Object> params = new HashMap<>();
 		params.put("order", order);
 
-		List<CategoryRestaurant> list = getQueryUtilRepository().simpleQueryList(sql.toString(), params);
+		List<CategoryRestaurant> list = simpleQueryList(sql.toString(), params);
 
 		if (list.isEmpty())
 			return null;

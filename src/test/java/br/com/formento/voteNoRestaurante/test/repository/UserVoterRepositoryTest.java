@@ -1,17 +1,9 @@
 package br.com.formento.voteNoRestaurante.test.repository;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import br.com.formento.voteNoRestaurante.model.UserVoter;
 import br.com.formento.voteNoRestaurante.repository.UserVoterRepository;
 import br.com.formento.voteNoRestaurante.repository.UserVoterRepositoryImpl;
 public class UserVoterRepositoryTest extends AbstractRepositoryTest {
@@ -20,7 +12,7 @@ public class UserVoterRepositoryTest extends AbstractRepositoryTest {
 
 	@Override
 	public void initializeRepository() {
-//		repository = new UserVoterRepositoryImpl(getHibernateTemplate());
+//		repository = new UserVoterRepositoryImpl(getEntityManager());
 	}
 
 	@Test

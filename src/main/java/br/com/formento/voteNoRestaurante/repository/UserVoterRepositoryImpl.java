@@ -8,10 +8,18 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import br.com.formento.voteNoRestaurante.model.UserVoter;
+import br.com.formento.voteNoRestaurante.service.QueryUtilRepository;
 
 @Transactional
 @Repository
 public class UserVoterRepositoryImpl extends AbstractRepository<UserVoter> implements UserVoterRepository {
+
+	public UserVoterRepositoryImpl() {
+	}
+
+	public UserVoterRepositoryImpl(QueryUtilRepository<UserVoter> queryUtilRepository) {
+		super(queryUtilRepository);
+	}
 
 	@Override
 	public UserVoter getByEmail(String email) {
@@ -23,7 +31,7 @@ public class UserVoterRepositoryImpl extends AbstractRepository<UserVoter> imple
 		Map<String, Object> params = new HashMap<>();
 		params.put("userVoterMail", email);
 
-		UserVoter result = getQueryUtilRepository().simpleQueryUniqueResult(sql.toString(), params);
+		UserVoter result = simpleQueryUniqueResult(sql.toString(), params);
 		return result;
 	}
 
